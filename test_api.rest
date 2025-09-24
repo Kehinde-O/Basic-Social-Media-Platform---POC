@@ -1,0 +1,413 @@
+### Social Media Platform API Test Suite
+### Base URL: http://localhost:8080/api
+### All protected endpoints require JWT token in Authorization header: Bearer <token>
+
+### ===========================================
+### AUTHENTICATION ENDPOINTS
+### ===========================================
+
+### 1. User Registration
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123",
+  "firstName": "Test",
+  "lastName": "User",
+  "bio": "This is a test user account"
+}
+
+### 2. User Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "alice_smith",
+  "password": "password123"
+}
+
+### 3. Validate JWT Token
+POST http://localhost:8080/api/auth/validate
+Content-Type: application/json
+
+{
+  "token": "YOUR_JWT_TOKEN_HERE"
+}
+
+### ===========================================
+### USER MANAGEMENT ENDPOINTS
+### ===========================================
+
+### 4. Get All Users
+GET http://localhost:8080/api/users
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 5. Get User by ID
+GET http://localhost:8080/api/users/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 6. Get User by Username
+GET http://localhost:8080/api/users/username/alice_smith
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 7. Get User by Email
+GET http://localhost:8080/api/users/email/alice.smith@email.com
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 8. Create New User
+POST http://localhost:8080/api/users
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "username": "newuser",
+  "email": "newuser@example.com",
+  "password": "password123",
+  "firstName": "New",
+  "lastName": "User",
+  "bio": "A new user in the system"
+}
+
+### 9. Update User
+PUT http://localhost:8080/api/users/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "username": "alice_smith_updated",
+  "email": "alice.updated@email.com",
+  "firstName": "Alice",
+  "lastName": "Smith",
+  "bio": "Updated bio information"
+}
+
+### 10. Delete User
+DELETE http://localhost:8080/api/users/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 11. Check Username Exists
+GET http://localhost:8080/api/users/exists/username/alice_smith
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 12. Check Email Exists
+GET http://localhost:8080/api/users/exists/email/alice.smith@email.com
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 13. Search Users by First Name
+GET http://localhost:8080/api/users/search/firstname/Alice
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 14. Search Users by Last Name
+GET http://localhost:8080/api/users/search/lastname/Smith
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 15. Search Users by Username
+GET http://localhost:8080/api/users/search/username/alice
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 16. Get Users Following
+GET http://localhost:8080/api/users/1/following
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 17. Get User Followers
+GET http://localhost:8080/api/users/1/followers
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 18. Get Following Count
+GET http://localhost:8080/api/users/1/following/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 19. Get Followers Count
+GET http://localhost:8080/api/users/1/followers/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ===========================================
+### POST MANAGEMENT ENDPOINTS
+### ===========================================
+
+### 20. Create New Post
+POST http://localhost:8080/api/posts
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "content": "This is a new post created via API!",
+  "user": {
+    "id": 1
+  }
+}
+
+### 21. Create Post for Specific User
+POST http://localhost:8080/api/posts/user/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+"Just finished an amazing project! #coding #success"
+
+### 22. Get All Posts
+GET http://localhost:8080/api/posts
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 23. Get Posts with Pagination
+GET http://localhost:8080/api/posts/paginated?page=0&size=5
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 24. Get Post by ID
+GET http://localhost:8080/api/posts/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 25. Get Posts by User
+GET http://localhost:8080/api/posts/user/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 26. Get Posts by User with Pagination
+GET http://localhost:8080/api/posts/user/1/paginated?page=0&size=5
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 27. Update Post
+PUT http://localhost:8080/api/posts/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "content": "Updated post content with new information!",
+  "user": {
+    "id": 1
+  }
+}
+
+### 28. Delete Post
+DELETE http://localhost:8080/api/posts/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 29. Search Posts by Content
+GET http://localhost:8080/api/posts/search?content=amazing
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 30. Search Posts with Pagination
+GET http://localhost:8080/api/posts/search/paginated?content=amazing&page=0&size=5
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 31. Get Posts After Date
+GET http://localhost:8080/api/posts/after/2024-01-01T00:00:00
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 32. Get Posts Between Dates
+GET http://localhost:8080/api/posts/between/2024-01-01T00:00:00/2024-12-31T23:59:59
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 33. Get User Feed
+GET http://localhost:8080/api/posts/feed/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 34. Get User Feed with Pagination
+GET http://localhost:8080/api/posts/feed/1/paginated?page=0&size=5
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 35. Get Post Count by User
+GET http://localhost:8080/api/posts/user/1/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ===========================================
+### FOLLOW MANAGEMENT ENDPOINTS
+### ===========================================
+
+### 36. Follow User
+POST http://localhost:8080/api/follows/1/follow/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 37. Unfollow User
+DELETE http://localhost:8080/api/follows/1/unfollow/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 38. Check if Following
+GET http://localhost:8080/api/follows/1/following/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 39. Get Users Following
+GET http://localhost:8080/api/follows/1/following
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 40. Get User Followers
+GET http://localhost:8080/api/follows/1/followers
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 41. Get Following Relationships
+GET http://localhost:8080/api/follows/1/following/relationships
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 42. Get Follower Relationships
+GET http://localhost:8080/api/follows/1/followers/relationships
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 43. Get Following Count
+GET http://localhost:8080/api/follows/1/following/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 44. Get Followers Count
+GET http://localhost:8080/api/follows/1/followers/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 45. Get Mutual Follows
+GET http://localhost:8080/api/follows/1/mutual/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 46. Get Suggested Users
+GET http://localhost:8080/api/follows/1/suggestions
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 47. Get Specific Follow Relationship
+GET http://localhost:8080/api/follows/1/relationship/2
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ===========================================
+### LIKE MANAGEMENT ENDPOINTS
+### ===========================================
+
+### 48. Like a Post
+POST http://localhost:8080/api/likes/1/like/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 49. Unlike a Post
+DELETE http://localhost:8080/api/likes/1/unlike/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 50. Toggle Like
+POST http://localhost:8080/api/likes/1/toggle/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 51. Check if User Liked Post
+GET http://localhost:8080/api/likes/1/has-liked/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 52. Get Likes for Post
+GET http://localhost:8080/api/likes/post/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 53. Get Likes by User
+GET http://localhost:8080/api/likes/user/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 54. Get Like Count for Post
+GET http://localhost:8080/api/likes/post/1/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 55. Get Like Count by User
+GET http://localhost:8080/api/likes/user/1/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 56. Get Most Liked Posts
+GET http://localhost:8080/api/likes/most-liked
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ===========================================
+### COMMENT MANAGEMENT ENDPOINTS
+### ===========================================
+
+### 57. Create Comment
+POST http://localhost:8080/api/comments/1/comment/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "content": "This is a great post! Thanks for sharing."
+}
+
+### 58. Get Comments for Post
+GET http://localhost:8080/api/comments/post/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 59. Get Comments for Post (Paginated)
+GET http://localhost:8080/api/comments/post/1/paginated?page=0&size=5
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 60. Get Comments by User
+GET http://localhost:8080/api/comments/user/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 61. Get Comment by ID
+GET http://localhost:8080/api/comments/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 62. Update Comment
+PUT http://localhost:8080/api/comments/1
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "content": "Updated comment content"
+}
+
+### 63. Delete Comment
+DELETE http://localhost:8080/api/comments/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 64. Get Comment Count for Post
+GET http://localhost:8080/api/comments/post/1/count
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 65. Search Comments
+GET http://localhost:8080/api/comments/search?text=amazing
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### 66. Get Recent Comments
+GET http://localhost:8080/api/comments/recent
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### ===========================================
+### SWAGGER/OPENAPI DOCUMENTATION
+### ===========================================
+
+### 67. Access Swagger UI
+GET http://localhost:8080/swagger-ui/index.html
+
+### 68. Access OpenAPI JSON
+GET http://localhost:8080/v3/api-docs
+
+### ===========================================
+### H2 DATABASE CONSOLE
+### ===========================================
+
+### 69. Access H2 Database Console
+GET http://localhost:8080/h2-console
+### JDBC URL: jdbc:h2:mem:socialmedia
+### Username: sa
+### Password: (leave empty)
+
+### ===========================================
+### TESTING WORKFLOW
+### ===========================================
+
+### Complete User Registration and Post Creation Workflow:
+### 1. Register a new user (use endpoint #1)
+### 2. Login with the new user (use endpoint #2)
+### 3. Copy the JWT token from the response
+### 4. Replace "YOUR_JWT_TOKEN_HERE" in subsequent requests with the actual token
+### 5. Create a post (use endpoint #21)
+### 6. Like the post (use endpoint #48)
+### 7. Comment on the post (use endpoint #57)
+### 8. Follow another user (use endpoint #36)
+### 9. Get your feed (use endpoint #33)
+
+### Sample Data Testing:
+### The application comes with pre-loaded sample data:
+### - Users: alice_smith, bob_jones, charlie_brown, diana_prince, eve_wilson
+### - Password for all sample users: password123
+### - Sample posts and follow relationships are also pre-loaded
+
+### ===========================================
+### NOTES
+### ===========================================
+
+### 1. All protected endpoints require JWT authentication
+### 2. JWT tokens expire after 24 hours (86400000 milliseconds)
+### 3. Use the login endpoint to get a new token when needed
+### 4. The application uses H2 in-memory database (data resets on restart)
+### 5. Sample data is automatically loaded on application startup
+### 6. All timestamps are in ISO format (YYYY-MM-DDTHH:mm:ss)
+### 7. Pagination is 0-based (first page is page 0)
+### 8. Content validation: Posts max 1000 chars, Comments max 500 chars
+### 9. Usernames and emails must be unique
+### 10. Users cannot follow themselves
