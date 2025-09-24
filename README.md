@@ -21,6 +21,10 @@ This project is a comprehensive social media platform built using Spring Boot an
 - **Security**: Spring Security integration with JWT token validation
 - **Error Handling**: Global exception handling with structured error responses
 - **Analytics**: Like counts, comment counts, and follow statistics
+- **Circular Reference Prevention**: DTOs and @JsonIgnoreProperties to prevent StackOverflowError
+- **Comprehensive Testing**: 69 API test endpoints in test_api.rest file
+- **Java Module System Support**: JVM arguments to handle modern Java warnings
+- **Easy Startup**: run.sh script for simplified application launch
 
 ### Technology Stack
 
@@ -49,26 +53,41 @@ Basic Social Media Platform/
 │   │   │   │   ├── AuthController.java           # Authentication endpoints
 │   │   │   │   ├── UserController.java           # User REST endpoints
 │   │   │   │   ├── PostController.java           # Post REST endpoints
-│   │   │   │   └── FollowController.java         # Follow relationship endpoints
+│   │   │   │   ├── FollowController.java         # Follow relationship endpoints
+│   │   │   │   ├── LikeController.java           # Like/unlike endpoints
+│   │   │   │   └── CommentController.java        # Comment CRUD endpoints
 │   │   │   ├── dto/
 │   │   │   │   ├── AuthResponse.java             # Authentication response DTO
 │   │   │   │   ├── LoginRequest.java             # Login request DTO
-│   │   │   │   └── RegisterRequest.java          # Registration request DTO
+│   │   │   │   ├── RegisterRequest.java          # Registration request DTO
+│   │   │   │   ├── PostRequest.java              # Post creation request DTO
+│   │   │   │   ├── PostResponse.java             # Post response DTO (prevents circular references)
+│   │   │   │   └── UserResponse.java             # User response DTO (prevents circular references)
+│   │   │   ├── exception/
+│   │   │   │   ├── BusinessLogicException.java   # Custom business logic exceptions
+│   │   │   │   ├── GlobalExceptionHandler.java   # Global exception handling
+│   │   │   │   └── ResourceNotFoundException.java # Resource not found exceptions
 │   │   │   ├── model/
-│   │   │   │   ├── User.java                     # User entity
-│   │   │   │   ├── Post.java                     # Post entity
-│   │   │   │   └── Follow.java                   # Follow relationship entity
+│   │   │   │   ├── User.java                     # User entity with @JsonIgnoreProperties
+│   │   │   │   ├── Post.java                     # Post entity with @JsonIgnoreProperties
+│   │   │   │   ├── Follow.java                   # Follow relationship entity
+│   │   │   │   ├── Like.java                     # Like entity
+│   │   │   │   └── Comment.java                  # Comment entity
 │   │   │   ├── repository/
 │   │   │   │   ├── UserRepository.java           # User data access
 │   │   │   │   ├── PostRepository.java           # Post data access
-│   │   │   │   └── FollowRepository.java         # Follow relationship data access
+│   │   │   │   ├── FollowRepository.java         # Follow relationship data access
+│   │   │   │   ├── LikeRepository.java           # Like data access
+│   │   │   │   └── CommentRepository.java        # Comment data access
 │   │   │   ├── security/
 │   │   │   │   ├── JwtAuthenticationFilter.java  # JWT authentication filter
-│   │   │   │   └── SecurityConfig.java           # Spring Security configuration
+│   │   │   │   └── SecurityConfig.java            # Spring Security configuration
 │   │   │   ├── service/
 │   │   │   │   ├── UserService.java              # User business logic
 │   │   │   │   ├── PostService.java              # Post business logic
-│   │   │   │   └── FollowService.java            # Follow relationship business logic
+│   │   │   │   ├── FollowService.java            # Follow relationship business logic
+│   │   │   │   ├── LikeService.java              # Like/unlike business logic
+│   │   │   │   └── CommentService.java           # Comment business logic
 │   │   │   ├── util/
 │   │   │   │   └── JwtUtils.java                 # JWT utility class
 │   │   │   └── SocialMediaApplication.java       # Main Spring Boot application
@@ -76,6 +95,10 @@ Basic Social Media Platform/
 │   │       └── application.properties            # Application configuration
 │   └── test/
 │       └── java/com/example/socialmedia/         # Test classes (to be implemented)
+├── target/                                       # Maven build output (excluded from git)
+├── .gitignore                                    # Git ignore file
+├── run.sh                                        # Application startup script with JVM args
+├── test_api.rest                                 # Comprehensive API test file (69 endpoints)
 ├── pom.xml                                       # Maven configuration
 └── README.md                                     # This file
 ```
@@ -343,6 +366,31 @@ mvn test
 2. **Authorize**: Click the "Authorize" button and enter your JWT token
 3. **Test Endpoints**: Use the interactive interface to test all API endpoints
 
+### Comprehensive API Testing with test_api.rest
+
+The project includes a comprehensive test file (`test_api.rest`) with 69 API endpoints covering:
+
+- **Authentication**: Register, login, token validation
+- **User Management**: CRUD operations, search, follow relationships
+- **Post Management**: Create, read, update, delete, search, feed generation
+- **Follow System**: Follow/unfollow, relationship queries, suggestions
+- **Like System**: Like/unlike posts, analytics, most liked posts
+- **Comment System**: CRUD operations, search, pagination
+
+**Usage:**
+1. **Import into your IDE**: Use IntelliJ IDEA, VS Code, or any REST client
+2. **Set up environment variables**: Configure base URL and JWT tokens
+3. **Run tests sequentially**: Start with authentication, then test other endpoints
+4. **Verify responses**: Check status codes and response formats
+
+**Test Categories:**
+- Authentication & Authorization (6 endpoints)
+- User Management (15 endpoints)
+- Post Management (20 endpoints)
+- Follow System (12 endpoints)
+- Like System (8 endpoints)
+- Comment System (8 endpoints)
+
 ## Code Documentation
 
 ### Key Classes and Their Responsibilities
@@ -395,6 +443,26 @@ mvn test
 - Transaction management for data consistency
 - JWT token validation and security
 - Password hashing with BCrypt for secure storage
+
+## Recent Updates & Fixes
+
+### StackOverflowError Resolution
+- **Issue**: Circular references in JPA entities caused infinite recursion during JSON serialization
+- **Solution**: Added `@JsonIgnoreProperties` annotations to all entity classes and created DTOs (`UserResponse`, `PostResponse`) to control serialization
+- **Files Modified**: All entity classes, UserController, PostController, new DTO classes
+
+### Java Module System Warnings Fix
+- **Issue**: Java 17+ module system warnings about restricted method access
+- **Solution**: Added JVM arguments to `pom.xml` and created `run.sh` script with proper JVM options
+- **Files Modified**: `pom.xml`, new `run.sh` script
+
+### Enhanced API Testing
+- **Added**: Comprehensive `test_api.rest` file with 69 API endpoints for complete testing
+- **Features**: All CRUD operations, authentication flows, and edge cases covered
+
+### Improved Documentation
+- **Updated**: Complete README with current file structure and all features
+- **Added**: Troubleshooting section, startup options, and comprehensive API documentation
 
 ## Troubleshooting
 
