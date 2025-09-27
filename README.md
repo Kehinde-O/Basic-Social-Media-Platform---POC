@@ -519,9 +519,9 @@ Potential improvements for the platform:
 
 ## Video Demonstration
 
-[Link to 4-5 minute video demonstration will be added here]
+**🎥 Project Demo Video**: [https://youtu.be/2I0v0KScpEI](https://youtu.be/2I0v0KScpEI)
 
-*Note: The video will include a walkthrough of the application features, code explanation, and a "talking head" presentation as required for accreditation.*
+*The video includes a comprehensive walkthrough of the application features, code explanation, and a "talking head" presentation as required for accreditation.*
 
 ## Author
 
